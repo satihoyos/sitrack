@@ -1,11 +1,13 @@
 package co.sitrack.searchword.engine.domain;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 @Builder( toBuilder = true )
 public class Position {
     private int sr;
