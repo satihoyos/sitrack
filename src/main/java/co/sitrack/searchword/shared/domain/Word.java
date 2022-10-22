@@ -1,4 +1,4 @@
-package co.sitrack.searchword.engine.domain;
+package co.sitrack.searchword.shared.domain;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,13 +9,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Builder( toBuilder = true )
-public class Position {
-    private int sr;
-    private int sc;
-    private int fr;
-    private int fc;
+public class Word {
+    private Position position;
+    private String content;
+    private int length;
+    private Type type;
 }
-
-
-
-

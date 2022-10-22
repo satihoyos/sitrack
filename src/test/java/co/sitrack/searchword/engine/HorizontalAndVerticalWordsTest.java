@@ -1,8 +1,8 @@
 package co.sitrack.searchword.engine;
 
-import co.sitrack.searchword.engine.domain.Position;
-import co.sitrack.searchword.engine.domain.Type;
-import co.sitrack.searchword.engine.domain.Word;
+import co.sitrack.searchword.shared.domain.Position;
+import co.sitrack.searchword.shared.domain.Type;
+import co.sitrack.searchword.shared.domain.Word;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static co.sitrack.searchword.engine.domain.Type.*;
+import static co.sitrack.searchword.shared.domain.Type.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HorizontalAndVerticalWordsTest {

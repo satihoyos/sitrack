@@ -1,8 +1,8 @@
 package co.sitrack.searchword.engine;
 
-import co.sitrack.searchword.engine.domain.Position;
-import co.sitrack.searchword.engine.domain.Type;
-import co.sitrack.searchword.engine.domain.Word;
+import co.sitrack.searchword.shared.domain.Position;
+import co.sitrack.searchword.shared.domain.Type;
+import co.sitrack.searchword.shared.domain.Word;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
