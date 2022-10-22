@@ -43,14 +43,13 @@ public class Positioner {
                 continue;
             }
 
-            short sr=0, cCounter=0, rowCounter=0;
+            short sr=0, lettersCounter=0, rowCounter=0;
             while (rowCounter<maxRow){
 
                 if (data[rowCounter][rColumn]==null){
-
-                    cCounter++;
+                    lettersCounter++;
                     rowCounter++;
-                    if (cCounter == newWord.length ()){
+                    if (lettersCounter == newWord.length ()){
 
                         Position pW = Position.builder ()
                                 .sc (rColumn)
@@ -71,15 +70,75 @@ public class Positioner {
                     }
                 }else {
                     sr = ++rowCounter;
-                    cCounter=0;
+                    lettersCounter=0;
                 }
             }
 
-            if (cCounter == newWord.length ()) break;
-
             columns [columnCounter.getAndIncrement ()]=true;
+            if (lettersCounter == newWord.length ()) break;
         }
     }
 
+    public void populateHorizontalWord(String newWord, List<Word> words, Type typeWord){
+        String[][]data =  this.container.getData ();
+        int maxColumn = this.container.getColumns ();
+        int maxRow = this.container.getRows ();
 
+        if (!typeWord.equals (Type.HORIZONTAL) && !typeWord.equals (Type.HORIZONTAL_REVERTED)
+                || newWord.length () > maxRow)
+            return;
+
+        boolean[]rows = new boolean[maxRow];
+        AtomicInteger rowCounter = new AtomicInteger ();
+        words.forEach (w -> {
+            if (Type.HORIZONTAL.equals (w.getType ()) || Type.HORIZONTAL_REVERTED.equals (w.getType ())){
+                rows[w.getPosition ().getSr ()]= true;
+                rowCounter.incrementAndGet ();
+            }
+        });
+
+        Random rand = new Random();
+
+        while (rowCounter.get () < maxRow) {
+            int randRow = rand.nextInt (maxRow);
+            if (rows[randRow]){
+                continue;
+            }
+
+            short sc=0, lettersCounter=0, columnCounter=0;
+            while (columnCounter<maxColumn){
+
+                if (data[randRow][columnCounter]==null){
+                    lettersCounter++;
+                    columnCounter++;
+                    if (lettersCounter == newWord.length ()){
+
+                        Position pW = Position.builder ()
+                                .sc (sc)
+                                .sr (randRow)
+                                .fc (sc+newWord.length () - 1)
+                                .fr (randRow)
+                                .build ();
+
+                        Word vWord = Word.builder ()
+                                .type (typeWord)
+                                .content (newWord)
+                                .position (pW)
+                                .length (newWord.length ()).build ();
+
+                        words.add (vWord);
+                        this.container.addHorizontalWord (vWord);
+                        break;
+                    }
+                }else {
+                    sc = ++columnCounter;
+                    lettersCounter=0;
+                }
+            }
+
+            rows [rowCounter.getAndIncrement ()]=true;
+            if (lettersCounter == newWord.length ()) break;
+        }
+
+    }
 }

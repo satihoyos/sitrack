@@ -20,6 +20,28 @@ public class Container {
         this.data = new String[rows][columns];
     }
 
+    public void addHorizontalWord (Word word){
+        String content = word.getContent ();
+        if(Type.HORIZONTAL_REVERTED.equals (word.getType ())) {
+            content = this.revertWord (content);
+        }
+
+        int row = word.getPosition ().getSr ();
+        int column = word.getPosition ().getSc ();
+
+        if (word.getPosition ().getFc () > (this.columns - 1) ||
+                row > (this.rows - 1) ||
+                row != word.getPosition ().getFr ()){
+            return;
+        }
+
+        String[] rowS = this.data[row];
+        AtomicInteger counter = new AtomicInteger(column);
+        content.chars ().forEach (vowel ->
+                rowS [counter.getAndIncrement ()] = Character.toString (vowel)
+        );
+    }
+
     public void addVerticalWord (Word word){
         String literal = word.getContent ();
         if(Type.VERTICAL_REVERTED.equals (word.getType ())) {
