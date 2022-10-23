@@ -1,6 +1,8 @@
 package co.sitrack.searchword.engine;
 
+import co.sitrack.searchword.api.application.game.create.CreateSearchWordGame;
 import co.sitrack.searchword.shared.domain.Position;
+import co.sitrack.searchword.shared.domain.SearchWordSetting;
 import co.sitrack.searchword.shared.domain.Type;
 import co.sitrack.searchword.shared.domain.Word;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,19 @@ public class HorizontalAndVerticalWordsTest {
 
         container.fillData ();
         container.print ();
+    }
+
+    @Test
+    public void borrar_test (){
+    /*    CreateSearchWordGame builder = new CreateSearchWordGame ();
+        SearchWordSetting  setting = new SearchWordSetting ();
+        setting.setW ((short)15);
+        setting.setH ((short)15);
+        setting.setLtr (true);
+        setting.setRtl (true);
+        setting.setTtb (true);
+        setting.setBtt (true);
+        builder.build (setting);*/
     }
 
     private List<String> getWordsFromPool (String[] wordsPool, int maxLetter) {
