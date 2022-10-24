@@ -108,7 +108,6 @@ public class CreateSearchWordGame {
                 .scrumbleWords (scrumbleWords).build ();
 
         repo.save (game);
-        //todo: guardar base de datos
         scrumbleWords.forEach (sword -> System.out.println (sword));
         return  id;
     }

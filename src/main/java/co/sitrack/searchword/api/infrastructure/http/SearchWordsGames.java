@@ -1,10 +1,14 @@
 package co.sitrack.searchword.api.infrastructure.http;
 
 import co.sitrack.searchword.api.application.game.create.CreateSearchWordGame;
-import co.sitrack.searchword.shared.domain.SearchWordGame;
+import co.sitrack.searchword.api.application.game.visualize.VisualizeSearchWordGame;
+import co.sitrack.searchword.api.application.words.visualize.VisualizeSearchWordList;
 import co.sitrack.searchword.shared.domain.SearchWordSetting;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +22,18 @@ import java.util.UUID;
 public class SearchWordsGames {
 
     private CreateSearchWordGame createSearchWordGame;
+    private VisualizeSearchWordGame visualizeSearchWordGame;
+    private VisualizeSearchWordList visualizeSearchWordList;
+
+    @Autowired
+    public SearchWordsGames (CreateSearchWordGame createSearchWordGame,
+                             VisualizeSearchWordGame visualizeSearchWordGame,
+                             VisualizeSearchWordList visualizeSearchWordList)
+    {
+        this.createSearchWordGame = createSearchWordGame;
+        this.visualizeSearchWordGame = visualizeSearchWordGame;
+        this.visualizeSearchWordList = visualizeSearchWordList;
+    }
 
     public SearchWordsGames (CreateSearchWordGame createSearchWordGame){
         this.createSearchWordGame =  createSearchWordGame;
@@ -29,18 +45,18 @@ public class SearchWordsGames {
         return ResponseEntity.ok (String.format ("{id:\"%s\"}",id));
     }
 
-    @GetMapping ("/view/{id}")
-    public  ResponseEntity<?> visualize () {
-        return ResponseEntity.ok (null);
+    @GetMapping (value = "/view/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public  String visualize (@PathVariable UUID id) {
+        return this.visualizeSearchWordGame.get (id);
     }
 
     @GetMapping ("/list/{id}")
-    public  ResponseEntity<?> visualizeWords () {
-        return ResponseEntity.ok (null);
+    public  ResponseEntity<?> visualizeWords (@PathVariable UUID id) {
+        return ResponseEntity.ok (this.visualizeSearchWordList.get (id));
     }
 
     @PutMapping ("/{id}")
-    public  ResponseEntity<?> findWord () {
+    public  ResponseEntity<?> findWord (@PathVariable UUID id) {
         return ResponseEntity.ok (null);
     }
 }
