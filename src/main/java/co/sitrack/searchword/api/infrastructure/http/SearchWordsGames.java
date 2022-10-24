@@ -2,7 +2,9 @@ package co.sitrack.searchword.api.infrastructure.http;
 
 import co.sitrack.searchword.api.application.game.create.CreateSearchWordGame;
 import co.sitrack.searchword.api.application.game.visualize.VisualizeSearchWordGame;
+import co.sitrack.searchword.api.application.words.find.CheckWordInGame;
 import co.sitrack.searchword.api.application.words.visualize.VisualizeSearchWordList;
+import co.sitrack.searchword.shared.domain.Position;
 import co.sitrack.searchword.shared.domain.SearchWordSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,15 +26,18 @@ public class SearchWordsGames {
     private CreateSearchWordGame createSearchWordGame;
     private VisualizeSearchWordGame visualizeSearchWordGame;
     private VisualizeSearchWordList visualizeSearchWordList;
+    private CheckWordInGame checkWordInGame;
 
     @Autowired
-    public SearchWordsGames (CreateSearchWordGame createSearchWordGame,
-                             VisualizeSearchWordGame visualizeSearchWordGame,
-                             VisualizeSearchWordList visualizeSearchWordList)
-    {
+    public SearchWordsGames (
+            CreateSearchWordGame createSearchWordGame,
+            VisualizeSearchWordGame visualizeSearchWordGame,
+            VisualizeSearchWordList visualizeSearchWordList,
+            CheckWordInGame checkWordInGame) {
         this.createSearchWordGame = createSearchWordGame;
         this.visualizeSearchWordGame = visualizeSearchWordGame;
         this.visualizeSearchWordList = visualizeSearchWordList;
+        this.checkWordInGame = checkWordInGame;
     }
 
     public SearchWordsGames (CreateSearchWordGame createSearchWordGame){
@@ -55,8 +60,14 @@ public class SearchWordsGames {
         return ResponseEntity.ok (this.visualizeSearchWordList.get (id));
     }
 
-    @PutMapping ("/{id}")
-    public  ResponseEntity<?> findWord (@PathVariable UUID id) {
-        return ResponseEntity.ok (null);
+    @PutMapping (value ="/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
+    public  ResponseEntity<?> findWord (@RequestBody Position p, @PathVariable UUID id) {
+        String respuesta = "{\"mensaje\":\"%s\"}";
+        if (this.checkWordInGame.validateWord (p, id))
+            respuesta =  String.format (respuesta,"Palabra encontrada");
+        else
+            respuesta =  String.format (respuesta,"Palabra no existe");
+
+        return ResponseEntity.ok (respuesta);
     }
 }
