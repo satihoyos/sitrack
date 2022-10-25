@@ -44,7 +44,7 @@ public class SearchWordsGames {
         this.createSearchWordGame =  createSearchWordGame;
     }
 
-    @PostMapping ()
+    @PostMapping (produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<?> create (@RequestBody SearchWordSetting settings){
         UUID id = this.createSearchWordGame.build (settings);
         return ResponseEntity.ok (String.format ("{id:\"%s\"}",id));

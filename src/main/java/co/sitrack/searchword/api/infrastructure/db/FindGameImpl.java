@@ -2,6 +2,7 @@ package co.sitrack.searchword.api.infrastructure.db;
 
 import co.sitrack.searchword.api.application.words.find.domain.FindGameRepo;
 import co.sitrack.searchword.shared.domain.SearchWordGame;
+import co.sitrack.searchword.shared.exceptions.SearchWordException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,6 +21,9 @@ public class FindGameImpl implements FindGameRepo {
     @Override
     public SearchWordGame get (UUID id) {
         Query q = new Query (Criteria.where ("_id").is (id));
-        return this.mongo.findOne (q, SearchWordGame.class);
+        SearchWordGame game = this.mongo.findOne (q, SearchWordGame.class);
+        if (game ==  null)
+            throw new SearchWordException (String.format ("Not Found id: %s", id));
+        return game;
     }
 }
