@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  #service 1: definition of mongo database
+  db:
+    image: mongo:4-bionic               #name and version of the image to download
+    container_name: search-word-dev     #name of the container created from docker image
+    ports:
+      - "27017:27017"
+
+  customerservice: #it is just a name, which will be used only in this file.
+    image: search-words-game              #name of the image after dockerfile executes
+    container_name: game                  #name of the container created from docker image
+    build:
+      context: .                          #docker file path (. means root directory)
+      dockerfile: Dockerfile              #docker file name
+    ports:
+      - "8084:8084"
+
+    depends_on: #define dependencies of this app
+      - db                                #dependency name (which is defined with this name 'db' in this file earlier)
