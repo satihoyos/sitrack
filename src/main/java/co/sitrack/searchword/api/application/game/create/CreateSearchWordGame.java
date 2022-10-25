@@ -38,8 +38,8 @@ public class CreateSearchWordGame {
     private static final int MIN_SIZE = 15;
 
     private static final String SIZE_MSG_ERROR =
-            "Error al crear tamaño de la sopa de letras. tamaño minimo de" +
-            "filas y columas %s, tamaño maximo filas y columnas %s. valores" +
+            "Error al crear tamaño de la sopa de letras. tamaño mínimo de" +
+            "filas y columas %s, tamaño máximo filas y columnas %s. valores" +
             " dados: filas: %s, columnas: %s";
 
     private static String[] wordsDB = {
@@ -50,10 +50,45 @@ public class CreateSearchWordGame {
             "gato", "raton", "helicoptero", "tierra", "marte", "julio", "diciembre",
             "septiembre", "empleado", "rustico", "tren", "matematicas", "informatico",
             "leon", "jirafa", "tigre", "bebe", "joven", "adulto", "hospital", "metro",
-            "cuchillo", "tenedor", "refrigerador", "caminio", "medico", "medias", "zapatos",
+            "cuchillo", "tenedor", "refrigerador", "caminio", "medico", "medias",
+            "zapatos", "ambiente","espacio","superficie","volumen", "zona", "planeta",
             "celular", "mar", "oceano", "asia", "america", "california", "torneo",
-            "peliculas", "animacion", "pez", "loro", "cuadrado", "triangulo", "rectangulo",
-            "momia", "egipto", "ingeniero", "artista", "navegador", "barco", "te"
+            "peliculas", "animacion", "pez", "loro", "cuadrado", "triangulo",
+            "rectangulo","semilla", "almendra","edad","instante","momento",
+            "momia", "egipto", "ingeniero", "artista", "navegador", "barco", "te","pie",
+            "talon", "muslo", "ojo", "nariz", "barba", "bigote", "cabello", "oreja", "uña",
+            "cerebro", "palma", "dedo", "cadera", "espalda", "cintura", "sangre", "espiritu",
+            "piel", "hueso", "resfreado", "bosque", "selva", "jungla", "conejo", "dragon",
+            "halcon", "sardina", "calamar", "pulpo", "araña", "mariposa", "serpiente",
+            "cocodrilo","segundo","decada","siglo","milenio", "ayer", "tarde", "noche",
+            "alimento","comida","bebida","vegetal","planta","flor","fruta",
+            "verdura", "papas", "manzana", "pera", "tomate","tiempo","calendario",
+            "sol","nublado","viento","rayo","tormenta","cielo","este","oeste",
+            "luna","lluvia","trueno","sur","norte","derecha","izquierda","diagonal",
+            "estrella","nieve","exterior","interior","calor","agua","hielo","vapor",
+            "galaxia","fuego","gas","aire","atmosfera","tierra","piso","suelo",
+            "universo","metal","hierro","oro","plata","plomo","sal","lodo","barro",
+            "clima","kilometro","centimetro","litro","gramo","kilo","cantidad",
+            "despejado","milimetro","sociedad","comunidad","encuentro","estructura",
+            "administracion","organizacion","asociacion","empresa","equipo","autoridad",
+            "cargo","campaña","club","comision","congreso","consejo","partido",
+            "pais","gobierno","estado","provincia","departamento","municipio",
+            "diputado","congresista","senador","ministro","politica","representante",
+            "democracia","director","alcalde"," intendente","gobernador","bomberos",
+            "presidente","capital","ciudad","poblacion","pueblo","villa","obligacion",
+            "libertad","derecho","permiso","prohibicion","ley","decreto","norma",
+            "constitucion","economia","consumo","demanda","compañia","comercio",
+            "dictadura","mercado","servicio","producto","produccion","transaccion",
+            "almacen","hotel","fabrica","cuenta","boleto","entrada","dinero",
+            "billete","expendedora","cambio","maquina","tarifa","precio","valor",
+            "escritorio","cama","cuarto","puerta","hogar","edificio","construccion",
+            "ascensor","escalera","camara","aguja","clavo","hilo","bolsillo","llave",
+            "trancar","revista","cuadro","electricidad","corriente","base","pata",
+            "silla","dormitorio","panel","ventana","departamento","elevador",
+            "aparato","cordon","bolso","paraguas","pantalla","arma","libro","grabado",
+            "mesa","habitacion","oficina","entrada","apartamento","cuerda","bolsa",
+            "escultura","ropa","prenda","manga","cuello","cierre","zapato","camisa",
+            "zapatilla","cordones","abrigo","chaqueta","calcetines","calzoncillo","falda"
     };
 
     /**
@@ -71,14 +106,14 @@ public class CreateSearchWordGame {
      */
     public UUID build (SearchWordSetting settings){
         short rows = settings.getW () != null ?
-                settings.getH ().shortValue () : MIN_SIZE;
+                settings.getW ().shortValue () : MIN_SIZE;
         short columns = settings.getH () != null ?
                 settings.getH ().shortValue () : MIN_SIZE;
 
         if (rows < MIN_SIZE || rows > MAX_SIZE ||
                 columns < MIN_SIZE || columns > MAX_SIZE)
             throw new SearchWordException (String
-                    .format (SIZE_MSG_ERROR, MAX_SIZE, MIN_SIZE, rows, columns));
+                    .format (SIZE_MSG_ERROR, MIN_SIZE, MAX_SIZE, rows, columns));
 
         int maxLetters= rows * columns * 3/10;
         List<String> wordsList = this.getWordsFromPool (wordsDB, maxLetters);

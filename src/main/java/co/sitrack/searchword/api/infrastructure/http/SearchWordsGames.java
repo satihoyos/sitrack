@@ -3,6 +3,7 @@ package co.sitrack.searchword.api.infrastructure.http;
 import co.sitrack.searchword.api.application.game.create.CreateSearchWordGame;
 import co.sitrack.searchword.api.application.game.visualize.VisualizeSearchWordGame;
 import co.sitrack.searchword.api.application.words.find.CheckWordInGame;
+import co.sitrack.searchword.api.application.words.solution.SearchGameSolution;
 import co.sitrack.searchword.api.application.words.visualize.VisualizeSearchWordList;
 import co.sitrack.searchword.shared.domain.Position;
 import co.sitrack.searchword.shared.domain.SearchWordSetting;
@@ -28,26 +29,27 @@ public class SearchWordsGames {
     private VisualizeSearchWordList visualizeSearchWordList;
     private CheckWordInGame checkWordInGame;
 
+    private SearchGameSolution searchGameSolution;
+
     @Autowired
     public SearchWordsGames (
             CreateSearchWordGame createSearchWordGame,
             VisualizeSearchWordGame visualizeSearchWordGame,
             VisualizeSearchWordList visualizeSearchWordList,
-            CheckWordInGame checkWordInGame) {
+            CheckWordInGame checkWordInGame,
+            SearchGameSolution searchGameSolution)
+    {
         this.createSearchWordGame = createSearchWordGame;
         this.visualizeSearchWordGame = visualizeSearchWordGame;
         this.visualizeSearchWordList = visualizeSearchWordList;
         this.checkWordInGame = checkWordInGame;
-    }
-
-    public SearchWordsGames (CreateSearchWordGame createSearchWordGame){
-        this.createSearchWordGame =  createSearchWordGame;
+        this.searchGameSolution = searchGameSolution;
     }
 
     @PostMapping (produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<?> create (@RequestBody SearchWordSetting settings){
         UUID id = this.createSearchWordGame.build (settings);
-        return ResponseEntity.ok (String.format ("{id:\"%s\"}",id));
+        return ResponseEntity.ok (String.format ("{\"id\":\"%s\"}",id));
     }
 
     @GetMapping (value = "/view/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -58,6 +60,11 @@ public class SearchWordsGames {
     @GetMapping ("/list/{id}")
     public  ResponseEntity<?> visualizeWords (@PathVariable UUID id) {
         return ResponseEntity.ok (this.visualizeSearchWordList.get (id));
+    }
+
+    @GetMapping ("/solution/{id}")
+    public  ResponseEntity<?> SolutionWords (@PathVariable UUID id) {
+        return ResponseEntity.ok (this.searchGameSolution.get (id));
     }
 
     @PutMapping (value ="/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
