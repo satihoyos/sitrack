@@ -75,19 +75,6 @@ public class HorizontalAndVerticalWordsTest {
         container.print ();
     }
 
-    @Test
-    public void borrar_test (){
-    /*    CreateSearchWordGame builder = new CreateSearchWordGame ();
-        SearchWordSetting  setting = new SearchWordSetting ();
-        setting.setW ((short)15);
-        setting.setH ((short)15);
-        setting.setLtr (true);
-        setting.setRtl (true);
-        setting.setTtb (true);
-        setting.setBtt (true);
-        builder.build (setting);*/
-    }
-
     private List<String> getWordsFromPool (String[] wordsPool, int maxLetter) {
         List<String> words = new ArrayList<> ();
         Random rand = new Random ();

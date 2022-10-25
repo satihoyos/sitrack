@@ -25,7 +25,6 @@ public class VisualizeSearchWordGame {
             strB.append ("|").append ("\n");
         });
         String s = strB.toString ();
-        System.out.println (s);
         return s;
     }
 }

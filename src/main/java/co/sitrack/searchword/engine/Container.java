@@ -4,6 +4,7 @@ import co.sitrack.searchword.shared.domain.Position;
 import co.sitrack.searchword.shared.domain.Type;
 import co.sitrack.searchword.shared.domain.Word;
 import lombok.Getter;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ public class Container {
     private int rows;
     private int columns;
 
+    private static RandomStringGenerator strGen =new RandomStringGenerator
+                    .Builder ()
+                    .withinRange (new char[][]{{'a', 'z'}}).build ();
     public Container (int rows, int columns) {
         //todo take care of low and hight limits in rows and columns
         this.rows = rows;
@@ -80,10 +84,8 @@ public class Container {
         for (String[] rows : this.data) {
             StringBuffer strB = new StringBuffer ();
             for (int i=0; i< rows.length; i++){
-                //rows[i] = str_gen.generate (1); //todo create ramdom
                 if (rows[i] == null)
-                    rows[i] = "*";
-
+                    rows[i] = strGen.generate (1);
                 strB.append (rows[i]);
             }
             scrumbleWords.add (strB.toString ());
@@ -102,6 +104,9 @@ public class Container {
         }
     }
 
+    /**
+     * This method is just to make tests
+     */
     public void print () {
         for (String[] row : this.data) {
             for (String column : row) {

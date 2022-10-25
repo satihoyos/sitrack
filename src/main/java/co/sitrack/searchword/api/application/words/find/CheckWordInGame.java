@@ -49,7 +49,6 @@ public class CheckWordInGame {
             }
         }
 
-        game.getScrumbleWords ().forEach (wf -> System.out.println (wf));
         this.updateGameRepo.updateScrambleWords (game.getScrumbleWords (), id);
 
         if (word == null) {

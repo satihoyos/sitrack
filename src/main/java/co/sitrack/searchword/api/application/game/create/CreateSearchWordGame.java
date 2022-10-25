@@ -158,7 +158,6 @@ public class CreateSearchWordGame {
                 .scrumbleWords (scrumbleWords).build ();
 
         repo.save (game);
-        scrumbleWords.forEach (sword -> System.out.println (sword));
         return  id;
     }
 
@@ -173,16 +172,14 @@ public class CreateSearchWordGame {
     private List<String> getWordsFromPool (String[] wordsPool, int maxLetter) {
         List<String> words = new ArrayList<> ();
         Random rand = new Random ();
-        String[] wordsAux = Arrays.copyOf (wordsPool, wordsPool.length);
+        List<String> lista = new ArrayList<> (Arrays.asList (wordsPool));
 
         while (maxLetter > 0) {
-            int n = rand.nextInt (wordsPool.length);
-            if (wordsAux[n] == null) {
-                continue;
-            }
-            words.add (wordsAux[n]);
-            maxLetter -= wordsAux[n].length ();
-            wordsAux[n] = null;
+            int n = rand.nextInt (lista.size ());
+            String addWord = lista.get (n);
+            words.add (addWord);
+            maxLetter -= addWord.length ();
+            lista.remove (n);
         }
 
         return words;
