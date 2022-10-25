@@ -119,7 +119,7 @@ there are 5 methods in this api.
         ]
 ```
 - #### Find Word 
- Note: Rows and columns start since position cero (0)
+ Note: Rows and columns start since position zero (0)
 ```
    Method:Pur
    url: http://localhost:8084/alphabetSoup/{UUID}
