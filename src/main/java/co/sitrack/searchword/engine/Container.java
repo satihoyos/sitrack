@@ -60,6 +60,21 @@ public class Container {
         }
     }
 
+    public void addDiagonalWord (Word w){
+        String content = w.getContent ();
+        if(Type.DIAGONAL_REVERTED.equals (w.getType ())) {
+            content = this.revertWord (content);
+        }
+
+        Position position = w.getPosition ();
+        int sc = position.getSc ();
+        int sr = position.getSr ();
+        int contador=0;
+        while (sc <= position.getFc () && sr <= position.getFr () ){
+            data[sr++][sc++]=Character.toString (content.charAt (contador++));
+        }
+    }
+
     public List<String> getScrumbleSearchWords (){
         List<String> scrumbleWords = new ArrayList<> ();
         for (String[] rows : this.data) {

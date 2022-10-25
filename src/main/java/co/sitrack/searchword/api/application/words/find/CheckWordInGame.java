@@ -32,11 +32,20 @@ public class CheckWordInGame {
             if (p.equals (solutionWord.getPosition ())){
                 word =  solutionWord.getContent ();
                 Type tipo = solutionWord.getType ();
-                if (tipo.equals (Type.HORIZONTAL) || tipo.equals (Type.HORIZONTAL_REVERTED))
-                    this.horizontalUpcase (game, solutionWord);
-                else
-                    this.verticalUpcase (game, solutionWord);
-                break;
+                switch (tipo){
+                    case HORIZONTAL:
+                    case HORIZONTAL_REVERTED:
+                        this.horizontalUpcase (game, solutionWord);
+                        break;
+                    case VERTICAL:
+                    case VERTICAL_REVERTED:
+                        this.verticalUpcase (game, solutionWord);
+                        break;
+                    case DIAGONAL:
+                    case DIAGONAL_REVERTED:
+                        this.diagonalUpcase (game, solutionWord);
+                }
+
             }
         }
 
@@ -50,7 +59,7 @@ public class CheckWordInGame {
         return true;
     }
 
-    public void horizontalUpcase (SearchWordGame game, Word w){
+    private void horizontalUpcase (SearchWordGame game, Word w){
         Position position = w.getPosition ();
         String word = w.getContent ().toUpperCase ();
         String scrumble = game.getScrumbleWords ().get (position.getSr ());
@@ -71,7 +80,7 @@ public class CheckWordInGame {
         game.getScrumbleWords ().set (position.getSr (), new String (chars));
     }
 
-    public void verticalUpcase (SearchWordGame game, Word w){
+    private void verticalUpcase (SearchWordGame game, Word w){
         List<String> scrumbleWords = game.getScrumbleWords ();
         Position p = w.getPosition ();
         String word = w.getContent ().toUpperCase ();
@@ -90,5 +99,24 @@ public class CheckWordInGame {
         }
     }
 
+    private void diagonalUpcase (SearchWordGame game, Word w){
+        List<String> scrumbleWords = game.getScrumbleWords ();
+        Position p  = w.getPosition ();
+        String word = w.getContent ().toUpperCase ();
+        int lastColumn = word.length () - 1;
+        AtomicInteger counter =
+                Type.DIAGONAL.equals (w.getType ()) ?
+                        new AtomicInteger () :
+                        new AtomicInteger (lastColumn);
 
+        int column = p.getSc ();
+        for (int i = p.getSr (); i <= p.getFr (); i++) {
+            String rowWord = scrumbleWords.get (i);
+            char[] chars = rowWord.toCharArray ();
+            chars[column++]= Type.DIAGONAL.equals (w.getType ()) ?
+                    word.charAt (counter.getAndIncrement ()):
+                    word.charAt (counter.getAndDecrement ());
+            scrumbleWords.set (i, new String (chars));
+        }
+    }
 }

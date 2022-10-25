@@ -12,4 +12,5 @@ public class SearchWordSetting {
     boolean rtl;
     boolean ttb;
     boolean btt;
+    boolean d;
 }

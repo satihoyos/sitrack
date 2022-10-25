@@ -18,6 +18,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static co.sitrack.searchword.shared.domain.Type.DIAGONAL;
+import static co.sitrack.searchword.shared.domain.Type.DIAGONAL_REVERTED;
 import static co.sitrack.searchword.shared.domain.Type.HORIZONTAL;
 import static co.sitrack.searchword.shared.domain.Type.HORIZONTAL_REVERTED;
 import static co.sitrack.searchword.shared.domain.Type.VERTICAL;
@@ -88,16 +90,29 @@ public class CreateSearchWordGame {
         if (settings.isRtl ())  typeList.add (HORIZONTAL_REVERTED);
         if (settings.isTtb ())  typeList.add (VERTICAL);
         if (settings.isBtt ())  typeList.add (VERTICAL_REVERTED);
+        if (settings.isD ())  {
+            typeList.add (DIAGONAL);
+            typeList.add (DIAGONAL_REVERTED);
+        }
 
         List<Word> searchWordsList = new ArrayList<> ();
         AtomicInteger conterTypes = new AtomicInteger ();
         wordsList.forEach (word -> {
             if (conterTypes.get () >= typeList.size ()) conterTypes.set (0);
-            Type tipo = typeList.get (conterTypes.getAndIncrement ());
-            if(HORIZONTAL.equals (tipo) || HORIZONTAL_REVERTED.equals (tipo))
-                p.populateHorizontalWord (word, searchWordsList, tipo);
-            else
-                p.populateVerticalWord (word, searchWordsList, tipo);
+            final Type tipo = typeList.get (conterTypes.getAndIncrement ());
+            switch (tipo){
+                case HORIZONTAL:
+                case HORIZONTAL_REVERTED:
+                    p.populateHorizontalWord (word, searchWordsList, tipo);
+                    break;
+                case VERTICAL:
+                case VERTICAL_REVERTED:
+                    p.populateVerticalWord (word, searchWordsList, tipo);
+                    break;
+                case DIAGONAL:
+                case DIAGONAL_REVERTED:
+                    p.populateDiagonalWord (word, searchWordsList, tipo);
+            }
         });
 
         List<String> scrumbleWords = container.getScrumbleSearchWords ();

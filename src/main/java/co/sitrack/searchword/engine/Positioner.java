@@ -141,4 +141,59 @@ public class Positioner {
         }
 
     }
+
+    public void populateDiagonalWord (String newWord, List<Word> words, Type typeWord){
+        String[][]data =  this.container.getData ();
+        int maxColumn = this.container.getColumns ();
+        int maxRow = this.container.getRows ();
+
+        if (!Type.DIAGONAL.equals (typeWord) && !Type.DIAGONAL_REVERTED.equals (typeWord) ||
+                newWord.length () > maxRow) {
+            return;
+        }
+
+        int rowAux = 0;
+        int columnAux=0;
+        int wordPositionSize = newWord.length () - 1;
+        for(;;) {
+            int finalRow = rowAux + wordPositionSize;
+            int finalColumn = columnAux + wordPositionSize;
+            int contador = 0;
+            boolean isValidWord = true;
+            if (finalRow < maxRow && finalColumn < maxColumn) {
+                while (isValidWord && rowAux + contador <= finalRow && columnAux <= finalColumn) {
+                    isValidWord = data[rowAux + contador][columnAux + contador] == null;
+                    contador++;
+                }
+            }else {
+                //finish search because word is out of range the word,
+                //or there is no space.
+                break;
+            }
+
+            if (isValidWord) {
+                Position pW = Position.builder ()
+                        .sc (columnAux)
+                        .sr (rowAux)
+                        .fc (finalColumn)
+                        .fr (finalRow)
+                        .build ();
+
+                Word vWord = Word.builder ()
+                        .type (typeWord)
+                        .content (newWord)
+                        .position (pW)
+                        .length (newWord.length ()).build ();
+
+                words.add (vWord);
+                this.container.addDiagonalWord (vWord);
+                break;
+            }
+
+            if (!(++columnAux < maxColumn)){
+                rowAux++;
+                columnAux = 0;
+            }
+        }
+    }
 }
